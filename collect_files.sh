@@ -1,4 +1,5 @@
 #!/bin/bash
+
 if [ "$#" -ne 2 ]; then
     echo "Использование: $0 /path/to/input_dir /path/to/output_dir"
     exit 1
@@ -28,6 +29,8 @@ copy_files() {
 
             if [[ -z "${file_count[$name]}" ]]; then
                 file_count[$name]=0 
+            fi
+            
             if [[ -e "$output_dir/$filename" ]]; then
                 ((file_count[$name]++))
                 new_filename="${name}${file_count[$name]}.$extension"
@@ -40,3 +43,4 @@ copy_files() {
     done
 }
 copy_files "$input_dir"
+echo "END"
