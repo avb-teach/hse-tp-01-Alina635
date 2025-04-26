@@ -1,3 +1,4 @@
+#!/bin/bash
 if [ "$#" -ne 2 ]; then
     echo "Использование: $0 /path/to/input_dir /path/to/output_dir"
     exit 1
