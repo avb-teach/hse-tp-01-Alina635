@@ -24,21 +24,32 @@ copy_files() {
             copy_files "$item"
         elif [ -f "$item" ]; then
             filename="${item##*/}"
-            extension="${filename##*.}" 
-            name="${filename%.*}"
-
-            if [[ -z "${file_count[$name]}" ]]; then
-                file_count[$name]=0 
+            extension="${filename##*.}"
+            name="${filename%.*}" 
+            index=-1
+            
+            for i in "${!file_count[@]}"; do
+                if [[ "${file_count[$i]}" == "$name" ]]; then
+                    index=$i
+                    break
+                fi
+            done
+            
+            if [[ $index -eq -1 ]]; then
+                file_count+=("$name")
+                index=$((${#file_count[@]} - 1))
+                count=0
+            else
+                count=$((index + 1))
             fi
             
             if [[ -e "$output_dir/$filename" ]]; then
-                ((file_count[$name]++))
-                new_filename="${name}${file_count[$name]}.$extension"
+                new_filename="${name}${count}.$extension"
                 cp "$item" "$output_dir/$new_filename"
             else
                 cp "$item" "$output_dir/$filename"
-                file_count[$name]=0 
             fi
+            
         fi
     done
 }
